@@ -1,0 +1,76 @@
+CREATE DATABASE IF NOT EXISTS sistema_producao;
+USE sistema_producao;
+
+-- -------------------------
+-- TABELA USUÁRIOS
+-- -------------------------
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    cargo VARCHAR(50) NOT NULL,
+    foto VARCHAR(255),
+    foto_base64 LONGTEXT
+);
+
+-- -------------------------
+-- TABELA SETORES
+-- -------------------------
+CREATE TABLE setores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    foto VARCHAR(255),
+    foto_base64 LONGTEXT
+);
+
+-- -------------------------
+-- TABELA PEÇAS
+-- -------------------------
+CREATE TABLE pecas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    peso DOUBLE NOT NULL,
+    descricao TEXT,
+    foto VARCHAR(255),
+    foto_base64 LONGTEXT
+);
+
+-- -------------------------
+-- TABELA ORDENS DE PRODUÇÃO
+-- -------------------------
+CREATE TABLE ordens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numero VARCHAR(50) NOT NULL,
+    id_setor INT NOT NULL,
+    id_peca INT NOT NULL,
+    quantidade INT NOT NULL,
+    status VARCHAR(50),
+    data DATE,
+    FOREIGN KEY (id_setor) REFERENCES setores(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_peca) REFERENCES pecas(id) ON DELETE CASCADE
+);
+
+
+
+
+
+
+
+
+INSERT INTO usuarios (nome, email, senha, cargo)
+VALUES 
+('Administrador', 'admin@empresa.com', '123', 'admin'),
+('João Silva', 'joao@empresa.com', '123', 'operador');
+
+
+INSERT INTO setores (nome, descricao)
+VALUES
+('Corte', 'Setor responsável pelo corte inicial das peças'),
+('Montagem', 'Setor onde é feita a montagem final dos componentes');
+
+INSERT INTO pecas (nome, peso, descricao)
+VALUES
+('Parafuso M10', 0.05, 'Parafuso de aço M10 padrão'),
+('Chapa A36', 2.5, 'Chapa de aço carbono A36');
